@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'autofixture',
     'search.apps.CarsearchConfig',
     'django.contrib.admin',
     'django.contrib.auth',
