@@ -35,6 +35,30 @@ class YearMonthField(models.CharField):
         raise ValidationError(self.error_messages['invalid'])
 
 
+class Make(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class Model(models.Model):
+    name = models.CharField(max_length=40)
+    make =  models.ForeignKey(Make, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class SubModel(models.Model):
+    name = models.CharField(max_length=50)
+    model = models.ForeignKey(Model, on_delete=models.CASCADE)
+    model_year = YearMonthField(max_length=20)
+
+    def __str__(self):
+        return str(self.name)
+
+
 class Car(models.Model):
     LPG = 'LPG'
     GASOLINE = 'GAS'
@@ -60,6 +84,9 @@ class Car(models.Model):
 
     PENDING = 'pend'
     INAUCTION = 'auction'
+
+
+
     DONEAUCTION = 'done'
 
     STATUS_CHOICES = [
@@ -68,11 +95,8 @@ class Car(models.Model):
         (DONEAUCTION, 'done_auction')
 
     ]
-    model_year = YearMonthField(max_length=20)
     registered_day = models.DateField('Registered Date')
-    brand = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
-    model = models.CharField(max_length=100)
+    sub_model = models.ForeignKey(SubModel, on_delete=models.CASCADE, null=True)
     color = models.CharField(max_length=20)
     fuel = models.CharField(
         max_length=6,
@@ -94,4 +118,4 @@ class Car(models.Model):
     photo = models.ImageField(null=True)
 
     def __str__(self):
-        return str(self.region)
+        return str(self.sub_model)

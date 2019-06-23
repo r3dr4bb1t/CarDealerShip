@@ -1,7 +1,6 @@
-certifi==2019.6.16
+certifi==2019.3.9
 Django==2.2.1
 django-autofixture==0.12.1
-django-infinite-scroll-pagination==1.0.0
 mkl-fft==1.0.12
 mkl-random==1.0.2
 numpy==1.16.4

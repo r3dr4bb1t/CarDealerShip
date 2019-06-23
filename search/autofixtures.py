@@ -1,6 +1,6 @@
 import random
-from search.models import Car
-from import_data import get_categories
+from search.models import Car, SubModel
+from import_data import get_categories, save_categories
 from autofixture import generators, register, AutoFixture
 
 BLUE = 'blue'
@@ -50,22 +50,29 @@ REGION_CHOICE = [
     (GYEONGNAM , 'gyeongsangnam-do'),
 ]
 
-MONTH_CHOICES = [(str(i), calendar.month_name[i]) for i in range(1, 13)]
+save_categories()
+sub_model_list = get_categories('sub_model').to_list()
+print(sub_model_list)
+SUB_MODEL_CHOICES = [(SubModel.objects.get(name=sub_model_list[i]), SubModel.objects.get(name=sub_model_list[i]).id) for i in range(0, get_categories('sub_model').size)]
+
+print(SUB_MODEL_CHOICES)
 
 
 class CarAutoFixture(AutoFixture):
-    field_values={
+    field_values = {
         'model_year': generators.DateGenerator(),
         'registered_day': generators.DateGenerator(),
         'color': generators.ChoicesGenerator(COLOR_CHOICES),
         'fuel': generators.ChoicesGenerator(Car.FUEL_CHOICES),
+        'sub_model': generators.ChoicesGenerator(SUB_MODEL_CHOICES),
         'gear': generators.ChoicesGenerator(Car.GEAR_CHOICES),
         'kms': generators.PositiveIntegerGenerator(),
         'region': generators.ChoicesGenerator(REGION_CHOICE),
         'status': generators.ChoicesGenerator(Car.STATUS_CHOICES),
     }
 
-register(Car, CarAutoFixture )
+
+register(Car, CarAutoFixture)
 #
 # model_year = YearMonthField(max_length=20)
 # registered_day = models.DateTimeField('Registered Date')
