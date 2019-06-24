@@ -52,10 +52,7 @@ REGION_CHOICE = [
 
 save_categories()
 sub_model_list = get_categories('sub_model').to_list()
-print(sub_model_list)
 SUB_MODEL_CHOICES = [(SubModel.objects.get(name=sub_model_list[i]), SubModel.objects.get(name=sub_model_list[i]).id) for i in range(0, get_categories('sub_model').size)]
-
-print(SUB_MODEL_CHOICES)
 
 
 class CarAutoFixture(AutoFixture):

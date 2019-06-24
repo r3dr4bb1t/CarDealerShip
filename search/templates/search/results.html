@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+ <ul class="nested">
+
+          <li><span class="caret"></span>
+            <ul class="nested">
+              <li>Black Tea</li>
+              <li>White Tea</li>
+              <li><span class="caret">Green Tea</span>
+                <ul class="nested">
+                  <li>Sencha</li>
+                  <li>Gyokuro</li>
+                  <li>Matcha</li>
+                  <li>Pi Lo Chun</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+<script>
+var toggler = document.getElementsByClassName("caret");
+var i;
+
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
+}
+</script>
+
+    {% endblock %}

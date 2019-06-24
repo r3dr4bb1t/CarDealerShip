@@ -1,5 +1,5 @@
 import json
-from .models import Car
+from .models import Car, Make, Model, SubModel
 from django.urls import reverse
 from django.views import generic
 from django.shortcuts import get_object_or_404, render
@@ -42,19 +42,28 @@ from django.http import Http404, HttpResponse
 #             'prev_page': serializers.to_page_key(**page.prev_page())}
 #
 #     return HttpResponse(json.dumps(data), content_type="application/json")
+#
+# def show_genres(request):
+#     return render(request, "search/index.html", {'genres': Make.objects.all()})
+
 
 class IndexView(generic.ListView):
+    model = 'Make'
     template_name = 'search/index.html'
-
-    context_object_name = 'latest_question_list'
+    context_object_name = 'make'
+    #
+    # def get_queryset(self):
+    #     return Car.objects.order_by('-pub_date')[:5]
+    #
+    def get_context_data(self, *args, **kwargs):
+        context = super(IndexView, self).get_context_data(*args, **kwargs)
+        context['model'] = Model.objects.all()
+        return context
 
     def get_queryset(self):
-        return Car.objects.order_by('-pub_date')[:5]
-
-    def category_list(request):
-        categories = Category.objects.all()  # this will get all categories, you can do some filtering if you need (e.g. excluding categories without posts in it)
-
-        return render(request, 'blog/category_list.html', {'categories': categories})
+        return Model.objects.all()
+    #
+    #     return render(request, '/category_list.html', {'categories': categories})
 
 class SearchView(generic.ListView):
     template_name = 'search/search_list.html'
@@ -63,10 +72,11 @@ class SearchView(generic.ListView):
 #     def get_queryset(self):
 #         return Question.objects.order_by('-pub_date')[:5]
 #
-#class DetailView(generic.DetailView):
-#     model = Question
-#     template_name = 'polls/detail.html'
+class DetailView(generic.DetailView):
+    model = Model
+    template_name = 'search/detail.html'
 #
-# class ResultsView(generic.DetailView):
-#     model = Question
-#     template_name = 'polls/results.html'
+
+class ResultsView(generic.ListView):
+    model = Model
+    template_name = 'search/results.html'

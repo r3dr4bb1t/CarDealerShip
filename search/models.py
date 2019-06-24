@@ -1,8 +1,15 @@
 import datetime
+import mptt
 import time
 from django.db import models
 from django.utils.translation import gettext as _
 from django.core.exceptions import ValidationError
+from django import template
+register = template.Library()
+
+
+from mptt.models import TreeForeignKey, MPTTModel
+from django.contrib.auth.models import Group
 
 # Create your models here.
 YEARMONTH_INPUT_FORMATS = (
@@ -57,6 +64,10 @@ class SubModel(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+# TreeForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True).contribute_to_class(Group, 'Make')
+# mptt.register(Group, order_insertion_by=['name'])
 
 
 class Car(models.Model):
